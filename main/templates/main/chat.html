@@ -44,11 +44,10 @@
     <hr>
     <div class="dropdown">
       <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle mb" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+        <img src="https://github.com/farshadamiri.png" alt="" width="32" height="32" class="rounded-circle me-2">
         <strong>mdo</strong>
       </a>
       <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-        <li><a class="dropdown-item" href="#">New project...</a></li>
         <li><a class="dropdown-item" href="#">Settings</a></li>
         <li><a class="dropdown-item" href="#">Profile</a></li>
         <li><hr class="dropdown-divider"></li>
@@ -94,8 +93,51 @@
 </div>
 </div>
 </div>
-
 </body>
+<script>
+// websocket scripts
+var loc = window.location
+var formData = $("#form")
+var msgInput = $("#id_message")
+var chatHolder = $("#chat-items")
+
+protocol = 'ws://'
+if (loc.protocol == "https:") {protocol = 'wss://'};
+var endpoint = protocol + loc.host + loc.pathname
+var socket = new WebSocket(endpoint);
+console.log ("endpoint", endpoint);
+
+
+socket.onmessage = function(e) {
+    console.log ("message", e)
+    var chatMsgData = JSON.parse(e.data)
+    chatHolder.append('<li><span style="font-weight: bold;">' + chatMsgData.username + ":</span> " + chatMsgData.message + "</li>")
+}
+
+socket.onopen = function(e) {
+    console.log ("open", e)
+    var form = $("#form")[0]
+    formData.submit(function(event) {
+        event.preventDefault();
+        //var formDataSerialized = formData.serialize()
+        var data = {
+            'message': msgInput.val(),
+        }
+        //socket.send(formDataSerialized)
+        //socket.send(msgInput.val());
+        socket.send(JSON.stringify(data));
+        msgInput.val('');
+        //formData[0].reset();
+    })
+}
+
+socket.onerror  = function(e) {
+    console.log ("error", e)
+}
+socket.onclose  = function(e) {
+    console.log ("close", e)
+}
+</script>
 </html>
 
 

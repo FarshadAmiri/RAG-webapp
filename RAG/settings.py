@@ -75,7 +75,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "RAG.wsgi.application"
-
+ASGI_APPLICATION = "RAG.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
