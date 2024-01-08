@@ -5,7 +5,7 @@ from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
 
 
-class ChatConsumer(AsyncConsumer):
+class RAGConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
         print("connected", event)
         other_user = self.scope["url_route"]["kwargs"]["username"]

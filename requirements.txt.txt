@@ -1,1 +1,1 @@
-django-sass-processor
+python -m pip install -U channels["daphne"]
