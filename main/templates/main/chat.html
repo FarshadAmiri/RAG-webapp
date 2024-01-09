@@ -19,26 +19,29 @@
         <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark sidebar" style="margin-left: 0;">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
       <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-      <span class="fs-4">RAG Chat</span>
+      <span class="fs-4" id="page_title">RAG Chat &nbsp<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-chat-left-dots-fill" viewBox="0 0 16 16">
+  <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+</svg></span>
     </a>
     <hr>
     <ul class="nav nav-pills flex-column">
       <li class="nav-item">
-        <a href="#" class="nav-link active" aria-current="page" data-bs-toggle="modal" data-bs-target="#newRagModal" data-bs-whatever="@getbootstrap">
-          <svg class="bi me-2" width="16" height="16"><use xlink:href="{% url 'main:create_rag' %}"></use></svg>
-          Create a new chat
+        <a href="{% url 'main:create_rag' %}" class="nav-link active text-center" aria-current="page" data-bs-toggle="modal" data-bs-target="#newRagModal" data-bs-whatever="@getbootstrap" >
+          Create a new RAG
         </a>
       </li>
     </ul>
-    <hr>
+    <br>
     <ul class="nav nav-pills flex-column" id="#chats">
-    <a href="#" class="list-group-item list-group-item-action py-3 lh-tight">
+    {% for thread in chat_threads %}
+    <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" style="margin-bottom: 10px">
         <div class="d-flex w-100 align-items-center justify-content-between">
-          <strong class="mb-1">Chat - 1</strong>
+          <strong class="mb-1">{{ thread.name }}</strong>
           <small class="text-muted">Tues</small>
         </div>
         <div class="col-10 mb-1 small">Last message sent to this chat</div>
       </a>
+    {% endfor %}
     </ul>
     <div class="mt-auto">
     <hr>
@@ -48,7 +51,6 @@
         <strong>User</strong>
       </a>
       <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-        <li><a class="dropdown-item" href="#">Settings</a></li>
         <li><a class="dropdown-item" href="#">Profile</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="#">Sign out</a></li>
@@ -80,32 +82,45 @@
         <form method="post" class="form-group" id="chat-box">
             {% csrf_token %}
             <div class="input-group mb-3">
-                <div class="input-group-prepend">
+                <div class="input-group-prepend" style="display: flex; align-items: center;">
                     <input type="text" placeholder="Send a message..." name="message" id="msg_field">
-                    <button type="submit" name="send" class="btn btn-success" id="send_btn">Send</button>
+                    <button type="submit" name="send" class="btn btn-success" id="send_btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16"><path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/></svg>
+                    </button>
                 </div>
             </div>
             </div>
         </form>
     </div> 
 </div>
-<div class="col-md-2">
+<div class="col-md-2" style="padding: 0;">
+            <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark sidebar" style="margin-left: 0;">
+                <!-- New sidebar content -->
+            </div>
+        </div>
 </div>
 </div>
-</div>
-<div class="modal fade" id="newRagModal" data-bs-backdrop="static" tabindex="0" aria-labelledby="newRag" aria-hidden="true">
+<div class="modal fade" id="newRagModal" tabindex="0" aria-labelledby="newRag" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="newRag">Create a New RAG model</h5>
+        <h5 class="modal-title" id="newRag">Create a New RAG</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-bs-newRagName="{{ new_rag_name }}"></button>
       </div>
       <div class="modal-body">
         <form action="{%  url 'main:create_rag' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
           <div class="mb-3">
-            <label for="rag-name" class="col-form-label">RAG name:</label>
-            <input type="text" class="form-control" id="rag-name">
+            <label for="rag-name" class="col-form-label">RAG name</label>
+            <input type="text" class="form-control" id="rag-name" name="new-rag-name">
+          </div>
+          <div class="mb-3">
+          <label for="llm" class="col-form-label">LLM</label>
+          <select class="form-select" id="llm" aria-label="Disabled select example" disabled>
+            <option selected>Llama2 7B</option>
+            <option value="2">Llama2 13B</option>
+            <option value="1">Mistral 7B</option>
+          </select>
           </div>
           <div class="mb-3">
             <label for="formFile" class="form-label">Add knowledge source</label>
@@ -118,7 +133,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
         {% comment %} <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button> {% endcomment %}
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Create</button>
       </div>
       </form>
     </div>

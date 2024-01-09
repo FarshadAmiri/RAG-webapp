@@ -1,9 +1,39 @@
+@font-face {
+  font-family: RobotoSlab;
+  src: url("..\\..\\fonts\\RobotoSlab.ttf");
+}
+
+@font-face {
+  font-family: Exo2;
+  src: url("..\\..\\fonts\\Exo2-Bold.ttf");
+}
+
 .sidebar {
   align-items: left;
   justify-content: left;
   width: 300px;
   background-color: #f8f9fa;
   height: 100vh;
+}
+
+#page_title {
+  font-family: Exo2;
+  font-weight: bolder;
+  font-size: 65px;
+  color: rgb(255, 153, 0);
+}
+
+#page_title:hover {
+  background-color: rgba(0, 0, 0, 0.0);
+  border-radius: 30px;
+  color: rgb(80, 219, 238);
+}
+
+#version {
+  font-family: Exo2;
+  font-weight: normal;
+  font-size: 18px;
+  color: rgb(255, 153, 0);
 }
 
 .container {
@@ -73,7 +103,42 @@
 .chat-box {
   background-color: rgb(230, 230, 230);
   border-radius: 30px;
-
 }
 
+body{
+  background-color: #212529;
+  /* background-color: #141414ec; */
+}
+
+#send_btn {
+  width: 40px; /* Adjust the width as needed */
+  height: 40px; /* Adjust the height as needed */
+  border-radius: 50%; /* Make the button circular */
+  padding: 10px;
+  margin: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#send_btn svg {
+  fill: white; /* Set the fill color of the SVG icon */
+  width: 20px; /* Adjust the size of the SVG icon as needed */
+  height: 20px; /* Adjust the size of the SVG icon as needed */
+}
+
+/* .modal {
+  animation-name: slide-down;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slide-down {
+  from {
+      transform: translateY(-100%);
+  }
+  to {
+      transform: translateY(0);
+  }
+} */
 
